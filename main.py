@@ -9,10 +9,9 @@ def get_transcript():
     if not video_id:
         return jsonify({'success': False, 'error': 'missing video_id'})
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(
-            video_id, languages=['zh-TW', 'zh-CN', 'zh-Hans', 'zh']
-        )
-        text = ' '.join([t['text'] for t in transcript])
+        ytt = YouTubeTranscriptApi()
+        transcript = ytt.fetch(video_id, languages=['zh-TW', 'zh-CN', 'zh-Hans', 'zh'])
+        text = ' '.join([t.text for t in transcript])
         return jsonify({'success': True, 'transcript': text})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
